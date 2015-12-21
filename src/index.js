@@ -1,7 +1,9 @@
 'use strict';
 
 import CanvasSpace from './lib/CanvasSpace';
-import SquareJumper from './lib/SquareJumper';
+import Component from './lib/Component';
+import Square from './lib/Square';
+import LinearMotion from './lib/LinearMotion';
 
 const c = document.getElementById('myCanvas');
 const ctx = c.getContext('2d');
@@ -11,27 +13,35 @@ const canvas = new CanvasSpace({
   ctx,
   canvas: c
 });
-var i;
-for ( i = 0; i < 1; i++) {
-  canvas.addObject(new SquareJumper({
-    x: 10 + 40 * i,
-    y: 100 - (i%10 - 5)* 10,
-    width: 40,
-    height: 60,
-    maxX : c.width
-  }));
-}
-// for ( i = 10; i < 20; i++) {
-//   canvas.addObject(new SquareJumper({
-//     x: 10 + 40 * i,
-//     y: 100 - (10 - i%10 - 5)* 10,
-//     width: 40,
-//     height: 60
-//   }));
-// }
-canvas.paint();
 
-setInterval(() => {
+let motion = new LinearMotion({
+  center : 100,
+  maxDistanceFromCenter : 50
+});
+let square = new Square({
+  width : 25,
+  height : 25,
+  position : {
+    x : 100,
+    y : 10
+  }
+});
+canvas.addObject(new Component({
+  motion,
+  drawing : square
+}));
+//
+// canvas.paint();
+//
+// setInterval(() => {
+//   canvas.update();
+//   canvas.paint();
+// }, 20);
+
+
+const render = ()=>{
+  requestAnimationFrame(render);
   canvas.update();
   canvas.paint();
-}, 20);
+};
+render();
