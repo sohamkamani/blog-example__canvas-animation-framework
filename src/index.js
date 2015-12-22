@@ -1,18 +1,11 @@
 'use strict';
 
-import CanvasSpace from './lib/CanvasSpace';
-import Component from './lib/Component';
-import Square from './lib/Square';
-import LinearMotion from './lib/LinearMotion';
+import Renderer from './Renderer';
+import Component from './Component';
+import Square from './drawings/Square';
+import LinearMotion from './motions/LinearMotion';
 
-const c = document.getElementById('myCanvas');
-const ctx = c.getContext('2d');
-window.ctx = ctx;
-
-const canvas = new CanvasSpace({
-  ctx,
-  canvas: c
-});
+const renderer = new Renderer('myCanvas');
 
 let motion = new LinearMotion({
   center : 100,
@@ -26,22 +19,14 @@ let square = new Square({
     y : 10
   }
 });
-canvas.addObject(new Component({
+renderer.addComponent(new Component({
   motion,
   drawing : square
 }));
-//
-// canvas.paint();
-//
-// setInterval(() => {
-//   canvas.update();
-//   canvas.paint();
-// }, 20);
-
 
 const render = ()=>{
   requestAnimationFrame(render);
-  canvas.update();
-  canvas.paint();
+  renderer.update();
+  renderer.paint();
 };
 render();
